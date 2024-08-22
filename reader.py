@@ -164,7 +164,7 @@ class reader_class():
                             try:         
                                 # Encontra o texto em si da self.mensagem para extração
                                 self.texto = self.id_extractor.find_element(By.XPATH, ".//span[contains(@class, 'selectable-text')]/span").text # Extrai o Texto da Mensagem
-                                self.texto = self.texto.lower()
+                                self.texto = self.texto
                                 
                                 print(f"{self.numero}: {self.texto}")
                                 

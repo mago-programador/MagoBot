@@ -1,8 +1,10 @@
 # Importar instâncias
 from reader import reader
+from message_config import messager
 
 # Bibliotecas de Automação de Navegador
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 import gc
 
@@ -43,8 +45,16 @@ class sender_class:
         Args:
             mensagem (_Any_): _Mensagem ao qual se deseja enviar._
         """
+        mensagem = str(mensagem)
+        mensagem_tratada = mensagem.splitlines()
+        print(mensagem_tratada)
+        print(type(mensagem_tratada))
         inputbox = self.driver.find_element(By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p')
-        inputbox.send_keys(mensagem)
+        for line in mensagem_tratada:
+            inputbox.send_keys(line)
+            inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
+        inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
+        inputbox.send_keys("JARVIS 2.0 - Beta")   
         enviar = self.driver.find_element(By.XPATH, "//span[@data-icon='send']")
         enviar.click()
 
@@ -106,6 +116,19 @@ class sender_class:
         finally:
             gc.collect()
         
-
+    def ler_mensagem(self):
+        try:
+            messager.texto = reader.texto
+        except AttributeError:
+            pass
+        
+    def responder(self):
+        try:
+            if messager.mensagem is not None:
+                self.enviar_mensagem(messager.mensagem)
+        except AttributeError:
+            pass
+        except NameError:
+            pass
                     
 sender = sender_class()

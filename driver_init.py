@@ -23,7 +23,14 @@ class init_class:
             print("\033[92mInicializando Jarvis - WhatsApp  v2.0\033[0m")
             print("\n")
             
-            
+            if not os.path.exists("bot\\database"):
+                os.makedirs('bot\\database')
+                print("Database criada")
+                with open("bot\\database\\messages_data.json", "w") as file:
+                    file.write("[]")
+                print("JSON criado com sucesso")
+            print("\n Database se faz necessária para armazenar o ID da mensagem")
+                
             options = Op()
             options.add_experimental_option("detach", True)
             options.add_argument("--allow-running-insecure-content")

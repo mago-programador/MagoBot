@@ -1,17 +1,16 @@
-from sender import sender
-
-
-class message_config:
+class SendMessage:
 
     def text(self):
-        self.texto = sender.texto
+        self.texto = None
+        self.mensagem = None
 
     def config(self):
         if self.texto == "ping":
-            sender.enviar_mensagem("Opa")
+            self.mensagem = "pong"
+        elif self.texto == "comandos":
+            self.mensagem = '''Exemplo de Comandos
+Comando 1
+Comando 2
+Comando 3'''
 
-    def flow_message(self):
-        self.text()
-        self.config()
 
-messager = message_config()
