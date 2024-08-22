@@ -47,14 +47,12 @@ class sender_class:
         """
         mensagem = str(mensagem)
         mensagem_tratada = mensagem.splitlines()
-        print(mensagem_tratada)
-        print(type(mensagem_tratada))
         inputbox = self.driver.find_element(By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p')
         for line in mensagem_tratada:
             inputbox.send_keys(line)
             inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
         inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
-        inputbox.send_keys("JARVIS 2.0 - Beta")   
+        inputbox.send_keys("ミ★ MagoBot 1.0 ★彡")   
         enviar = self.driver.find_element(By.XPATH, "//span[@data-icon='send']")
         enviar.click()
 

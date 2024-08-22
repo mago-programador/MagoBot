@@ -20,16 +20,16 @@ class init_class:
     """
         try:
             
-            print("\033[92mInicializando Jarvis - WhatsApp  v2.0\033[0m")
+            print("\033[92mMagoBot v1.0\033[0m")
             print("\n")
             
-            if not os.path.exists(f"{os.path.dirname()}\\database"):
-                os.makedirs(f'{os.path.dirname()}\\database')
+            if not os.path.exists(f"{os.path.dirname(__file__)}\\database"):
+                os.makedirs(f'{os.path.dirname(__file__)}\\database')
                 print("Database criada")
-                with open(f"{os.path.dirname()}\\database\\messages_data.json", "w") as file:
+                with open(f"{os.path.dirname(__file__)}\\database\\messages_data.json", "w") as file:
                     file.write("[]")
                 print("JSON criado com sucesso")
-            print("\n Database se faz necessária para armazenar o ID da mensagem")
+                print("Database se faz necessária para armazenar o ID da mensagem")
                 
             options = Op()
             options.add_experimental_option("detach", True)

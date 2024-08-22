@@ -1,8 +1,6 @@
 from reader import reader
 from sender import sender
-from message_config import SendMessage
-
-messager = SendMessage()
+from message_config import messager
 
 while True:
 
@@ -16,4 +14,7 @@ while True:
 
     sender.masterizar(messager.config())
 
-    sender.responder()
+    try:
+        sender.responder()
+    except Exception:
+        pass

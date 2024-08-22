@@ -36,7 +36,7 @@ class reader_class():
             Método usado para verificar a presença da Lista de Conversa. É usado dentro do método fluxo no loop
             da main para dar continuidade na leitura das mensagens.
             """
-            self.wait_list = WebDriverWait(self.driver, timeout=2)
+            self.wait_list = WebDriverWait(self.driver, timeout=120)
             self.chat_list = self.wait_list.until(EC.visibility_of_element_located((By.XPATH, "//div[@aria-label='Lista de conversas']"))) # Aguarda a Lista de Conversa           
         
         def verify_unread_chats(self):    
