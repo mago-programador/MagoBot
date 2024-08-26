@@ -9,7 +9,7 @@ class Commands:
         
         if messager.texto is not None:
             try:
-                with open(f"{os.path.dirname(__file__)}\\whitelist.txt", "r") as file:
+                with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "r") as file:
                     conteudo = file.read()
                     self.whitelist = conteudo.splitlines()
                 
@@ -17,11 +17,11 @@ class Commands:
                     mensagem = sender.texto
                     index = mensagem.split()
                     numero = index[1]
-                    with open(f"{os.path.dirname(__file__)}\\whitelist.txt", "r") as file:
+                    with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "r") as file:
                         self.conteudo = file.read()
                         self.conteudo = self.conteudo.splitlines()
                         self.conteudo.append(numero)
-                    with open(f"{os.path.dirname(__file__)}\\whitelist.txt", "w") as file:
+                    with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "w") as file:
                         for num in self.conteudo:
                             file.write(f"{num}\n")
                         sender.enviar_mensagem("Número adicionado com sucesso.")
@@ -30,17 +30,17 @@ class Commands:
                     mensagem = sender.texto
                     index = mensagem.split()
                     numero = index[1]
-                    with open(f"{os.path.dirname(__file__)}\\whitelist.txt", "r") as file:
+                    with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "r") as file:
                         self.conteudo = file.read()
                         self.conteudo = self.conteudo.splitlines()
                         self.conteudo.remove(numero)
-                    with open(f"{os.path.dirname(__file__)}\\whitelist.txt", "w") as file:
+                    with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "w") as file:
                         for num in self.conteudo:
                             file.write(f"{num}\n")
                         sender.enviar_mensagem("Número removido com sucesso.")
                     
                 elif "/listw" in messager.texto:  
-                    with open(f"{os.path.dirname(__file__)}\\whitelist.txt", "r") as file:
+                    with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "r") as file:
                         conteudo = file.read()
                         sender.enviar_mensagem(conteudo)
                         

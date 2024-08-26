@@ -30,12 +30,12 @@ class init_class:
             if not os.path.exists(f"{os.path.dirname(__file__)}\\database\\messages_data.json"):
                 with open(f"{os.path.dirname(__file__)}\\database\\messages_data.json", "w") as file:
                     file.write("[]")
-                print("Base de Armazenamento de ID's das mensagens - criado com sucesso")
+                print("database de mensagens - criada com sucesso")
                 
             if not os.path.exists(f"{os.path.dirname(__file__)}\\database\\whitelist.txt"):
                 with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "w") as file:
                     file.write("")
-                print("Whitelist - criada com sucesso")
+                print("whitelist - criada com sucesso")
                 
             options = Op()
             options.add_experimental_option("detach", True)
