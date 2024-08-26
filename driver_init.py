@@ -26,10 +26,16 @@ class init_class:
             if not os.path.exists(f"{os.path.dirname(__file__)}\\database"):
                 os.makedirs(f'{os.path.dirname(__file__)}\\database')
                 print("Database criada")
+                
+            if not os.path.exists(f"{os.path.dirname(__file__)}\\database\\messages_data.json"):
                 with open(f"{os.path.dirname(__file__)}\\database\\messages_data.json", "w") as file:
                     file.write("[]")
-                print("JSON criado com sucesso")
-                print("Database se faz necessária para armazenar o ID da mensagem")
+                print("Base de Armazenamento de ID's das mensagens - criado com sucesso")
+                
+            if not os.path.exists(f"{os.path.dirname(__file__)}\\database\\whitelist.txt"):
+                with open(f"{os.path.dirname(__file__)}\\database\\whitelist.txt", "w") as file:
+                    file.write("")
+                print("Whitelist - criada com sucesso")
                 
             options = Op()
             options.add_experimental_option("detach", True)
@@ -58,6 +64,8 @@ class init_class:
             self.ActionChains = ActionChains(self.driver)
             
             self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@aria-label='Lista de conversas']")))
+            
+            
             
         except Exception as excp:
             print(excp)

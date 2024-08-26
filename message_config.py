@@ -5,7 +5,7 @@ class SendMessage:
         self.mensagem = None
         self.midia = None
         self.legenda = None
-
+    
     def config(self):
         if self.texto == "ping":
             self.mensagem = "pong"
