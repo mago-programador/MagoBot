@@ -18,3 +18,8 @@ while True:
         sender.responder()
     except Exception:
         pass
+    
+    try:
+        sender.responder_midia()
+    except Exception as e:
+        print(e)

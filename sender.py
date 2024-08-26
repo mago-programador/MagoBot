@@ -47,10 +47,21 @@ class sender_class:
         """
         mensagem = str(mensagem)
         mensagem_tratada = mensagem.splitlines()
-        inputbox = self.driver.find_element(By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p')
         for line in mensagem_tratada:
-            inputbox.send_keys(line)
-            inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
+            inputbox = self.driver.find_element(By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p')
+            if "#enter" in line:
+                new_line = line.split("#enter")
+                msg = "".join(new_line)
+                inputbox.send_keys(msg)
+                inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
+                inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
+                inputbox.send_keys("ミ★ MagoBot 1.0 ★彡")  
+                enviar = self.driver.find_element(By.XPATH, "//span[@data-icon='send']")
+                enviar.click()
+
+            else:
+                inputbox.send_keys(line)
+                inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
         inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
         inputbox.send_keys("ミ★ MagoBot 1.0 ★彡")   
         enviar = self.driver.find_element(By.XPATH, "//span[@data-icon='send']")
@@ -70,7 +81,8 @@ class sender_class:
         if legenda is not None:
             self.driver.find_element(By.XPATH, 
             '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(legenda)
-
+        else:
+            pass
         
         # Abrir ícone de anexos
         while True:
@@ -78,6 +90,8 @@ class sender_class:
                 wait_plus_icon = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//span[@data-icon='plus']")))
                 if wait_plus_icon:
                     break
+                else:
+                    pass
             except Exception:
                 pass
         
@@ -85,21 +99,30 @@ class sender_class:
         
         time.sleep(2)
         
+        midias = [
+            ".jpg", ".jpeg", ".png", ".gif", ".bmp",
+            ".tiff", ".tif", ".ico", ".webp", ".heif", ".heic",
+            ".mp4", ".3gp", ".mov"
+        ]
+        
+        midias_tupla = tuple(midias)
+        
         # Localizar e inserir o arquivo no input
-        while True:
-            try:
-                if caminho.endswith('.xlsm'):
-                    self.driver.find_element(By.XPATH,
-                    "//input[@accept='*']").send_keys(caminho) 
-                    break 
-                else:
-                    self.driver.find_element(By.XPATH,
-                    "//input[@accept='image/*,video/mp4,video/3gpp,video/quicktime']").send_keys(caminho)  
-                    break
-            except Exception:
-                pass
-            
-            
+        try:
+            while True:
+                try:
+                    if caminho.endswith(midias_tupla):
+                        self.driver.find_element(By.XPATH,
+                        "//input[@accept='image/*,video/mp4,video/3gpp,video/quicktime']").send_keys(caminho)  
+                        break 
+                    else:
+                        self.driver.find_element(By.XPATH,
+                        "//input[@accept='*']").send_keys(caminho)
+                        break
+                except Exception as e:
+                    print(e)
+        except Exception as e:
+            print(e)
         # Enviar o arquivo
         time.sleep(2)
         self.wait.until(EC.element_to_be_clickable((By.XPATH, "//span[@data-icon='send']")))
@@ -128,5 +151,15 @@ class sender_class:
             pass
         except NameError:
             pass
+                    
+    def responder_midia(self):
+        try:
+            if messager.midia is not None:
+                self.enviar_midia(messager.midia, messager.legenda)
+        except AttributeError:
+            pass
+        except NameError:
+            pass
+                                    
                     
 sender = sender_class()
