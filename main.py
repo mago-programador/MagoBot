@@ -1,7 +1,7 @@
 from reader import reader
 from sender import sender
 from message_config import messager
-from bot.commands import utiler
+from database.commands import utiler
 from functools import lru_cache
 
 @lru_cache
