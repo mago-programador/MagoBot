@@ -85,6 +85,12 @@ próximas versões do bot.
 - **Integração com APIs**: Conecte o MagoBot a outras APIs para criar um assistente poderoso que busca informações externas.
 
 ---
+## 💬 Participe da nossa comunidade!
+
+- **WhatsApp**: [Clique aqui para entrar no grupo](https://chat.whatsapp.com/EXxoqugdVTQ3zhQaTmXW6D)
+- **TikTok**: [Siga-me no TikTok](https://www.tiktok.com/@mago.programador)
+
+---
 
 ## ⚙️ Tecnologias Utilizadas
 
