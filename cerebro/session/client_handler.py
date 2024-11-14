@@ -26,7 +26,23 @@ class WhatsAppClient:
                 session_information = data[1]
                 if session_information == "True":  # Se for verdadeiro, ele não irá tentar reconhecer o QR CODE.
                     print("Sessão ativa encontrada - pulando login")
-                    self.session_init()
+                    try:
+
+                        chat_list = self.driver.find_element(By.XPATH, "//div[@aria-label='Lista de conversas']")
+
+                        if chat_list:
+                            
+                            print("sessão iniciada com sucesso")
+                            
+                            session_path = os.path.join("cerebro", "session", "session_data.txt")
+
+                            with open(session_path, 'a+') as session_file:
+                                session_file.write("session=True")
+
+                    except UnboundLocalError:
+                        pass
+                    except NoSuchElementException:
+                        pass
                     return
 
         else:
@@ -34,7 +50,7 @@ class WhatsAppClient:
 
     def qrcode_whatsapp_extractor(self):
 
-        self.screenshot_path = os.path.join("cerebro", "session", "screenshot.png")  # Caminho para armazenar temporariamente o print do QR CODE na página WEB.
+        screenshot_path = os.path.join("cerebro", "session", "screenshot.png")  # Caminho para armazenar temporariamente o print do QR CODE na página WEB.
 
         while True:
             try:
@@ -46,7 +62,7 @@ class WhatsAppClient:
             except Exception:
                 pass
 
-        self.driver.save_screenshot(self.screenshot_path)  # Captura uma screenshot da página WEB para iniciar a captura do QR CODE.
+        self.driver.save_screenshot(screenshot_path)  # Captura uma screenshot da página WEB para iniciar a captura do QR CODE.
 
         # Essa parte básica é apenas para converter de foto para apresentar o QR CODE no console.
         location = qr_content.location
@@ -56,7 +72,7 @@ class WhatsAppClient:
         right = left + size["width"]
         bottom = top + size["height"]
 
-        screenshot = Image.open(self.screenshot_path)
+        screenshot = Image.open(screenshot_path)
         qr_code_image = screenshot.crop((left, top, right, bottom))
 
         qr_code_data = decode(qr_code_image)
@@ -77,19 +93,13 @@ class WhatsAppClient:
 
         qr.print_ascii(invert=True)
 
-        qr_updated = False
-        while not qr_updated:
+        while True:
 
             try:
-
-                try:
-                    new_qrcode = self.driver.find_element(By.XPATH, "//canvas")
-                except NoSuchElementException:
-                    pass
-
+                new_qrcode = self.driver.find_element(By.XPATH, "//canvas")
                 if new_qrcode:
 
-                    self.driver.save_screenshot(self.screenshot_path)
+                    self.driver.save_screenshot(screenshot_path)
 
                     location = new_qrcode.location
                     size = new_qrcode.size
@@ -98,7 +108,7 @@ class WhatsAppClient:
                     right = left + size["width"]
                     bottom = top + size["height"]
 
-                    screenshot = Image.open(self.screenshot_path)
+                    screenshot = Image.open(screenshot_path)
                     qr_code_image = screenshot.crop((left, top, right, bottom))
 
                     qr_code_data = decode(qr_code_image)
@@ -112,12 +122,6 @@ class WhatsAppClient:
 
                     else:
                         print("QR Code não encontrado ou não legível")
-
-                else:
-                    session_data = self.session_init()
-                    if session_data:
-                        qr_updated = True
-
             except NoSuchElementException:
                 pass
             except AttributeError:
@@ -129,31 +133,22 @@ class WhatsAppClient:
             except StaleElementReferenceException:
                 pass
 
-    def session_init(self):
+            try:
 
-        try:
+                chat_list = self.driver.find_element(By.XPATH, "//div[@aria-label='Lista de conversas']")
 
-            chat_list = self.driver.find_element(By.XPATH, "//div[@aria-label='Lista de conversas']")
+                if chat_list:
+                    
+                    print("sessão iniciada com sucesso")
+                    
+                    session_path = os.path.join("cerebro", "session", "session_data.txt")
 
-            if chat_list:
+                    with open(session_path, 'a+') as session_file:
+                        session_file.write("session=True")
 
-                print("sessão iniciada com sucesso")
-
-                session_path = os.path.join("cerebro", "session", "session_data.txt")
-
-                with open(session_path, 'a+') as session_file:
-                    session_file.write("session=True")
-
-                try:
-
-                    os.remove(self.screenshot_path)
-
-                except Exception:
-                    pass
-
-                return True
-        except UnboundLocalError:
-            pass
-        except NoSuchElementException:
-            pass
-        return False
+                    os.remove(screenshot_path)
+                    break
+            except UnboundLocalError:
+                pass
+            except NoSuchElementException:
+                pass
