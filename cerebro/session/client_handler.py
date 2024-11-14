@@ -26,25 +26,26 @@ class WhatsAppClient:
                 session_information = data[1]
                 if session_information == "True":  # Se for verdadeiro, ele não irá tentar reconhecer o QR CODE.
                     print("Sessão ativa encontrada - pulando login")
-                    try:
+                    while True:
+                        try:
 
-                        chat_list = self.driver.find_element(By.XPATH, "//div[@aria-label='Lista de conversas']")
+                            chat_list = self.driver.find_element(By.XPATH, "//div[@aria-label='Lista de conversas']")
 
-                        if chat_list:
-                            
-                            print("sessão iniciada com sucesso")
-                            
-                            session_path = os.path.join("cerebro", "session", "session_data.txt")
+                            if chat_list:
+                                
+                                print("sessão iniciada com sucesso")
+                                
+                                session_path = os.path.join("cerebro", "session", "session_data.txt")
 
-                            with open(session_path, 'a+') as session_file:
-                                session_file.write("session=True")
+                                with open(session_path, 'a+') as session_file:
+                                    session_file.write("session=True")
 
-                            return
+                                return
 
-                    except UnboundLocalError:
-                        pass
-                    except NoSuchElementException:
-                        pass
+                        except UnboundLocalError:
+                            pass
+                        except NoSuchElementException:
+                            pass
 
         else:
             self.qrcode_whatsapp_extractor()  # Caso seja falso a variável presente no arquivo de sessão, é iniciado o método de reconhecimento do QR CODE.
