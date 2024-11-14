@@ -48,7 +48,6 @@ class SenderMessages:
         Args:
             mensagem (_Any_): _Mensagem ao qual se deseja enviar._
         """
-        print('to aqui 1')
         mensagem = str(mensagem)
         split_msg = mensagem.splitlines()
         for line in split_msg:
@@ -61,7 +60,6 @@ class SenderMessages:
             if line:
                 inputbox.send_keys(line)
             inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
-        print('to aqui 2')
         # Para excluir a marca do MagoBot das mensagens basta apagar as linhas deste bloco
         inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
         inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
