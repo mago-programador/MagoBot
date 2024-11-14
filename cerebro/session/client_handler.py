@@ -77,7 +77,8 @@ class WhatsAppClient:
 
         qr.print_ascii(invert=True)
 
-        while True:
+        qr_updated = False
+        while not qr_updated:
 
             try:
 
@@ -115,7 +116,7 @@ class WhatsAppClient:
                 else:
                     session_data = self.session_init()
                     if session_data:
-                        break
+                        qr_updated = True
 
             except NoSuchElementException:
                 pass
