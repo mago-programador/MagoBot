@@ -136,7 +136,13 @@ class WhatsAppClient:
                 with open(session_path, 'a+') as session_file:
                     session_file.write("session=True")
 
-                os.remove(self.screenshot_path)
+                try:
+
+                    os.remove(self.screenshot_path)
+
+                except Exception:
+                    pass
+
                 return
         except UnboundLocalError:
             pass
