@@ -42,12 +42,6 @@ class InitDriver:
                     file.write("[]")
                     print("base de id's das mensagens - criada com sucesso")
 
-            # Verifica a existência o arquivo texto "whitelist", usado para definir à quem o bot poderá
-            # enviar mensagens, caso ele continue vazio, o bot responderá à todos que utilizarem os comandos definidos pelo usuário.
-            if not os.path.exists(self.whitelist_path):
-                with open(self.whitelist_path, "a+") as file:
-                    print("whitelist - criada com sucesso")
-
             # Aqui se encontra todas as configurações que eu considero necessária para o bom funcionamento do bot.
             options = Op()  # Inicializa a instância "options" para configurar as opçoes do navegador.
             options.add_argument("--headless")  # Inicia o chrome webdriver em segundo plano.
