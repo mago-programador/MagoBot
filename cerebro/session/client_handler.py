@@ -81,7 +81,7 @@ class WhatsAppClient:
 
             try:
 
-                self.session_init()
+                session_data = self.session_init()
 
                 new_qrcode = self.driver.find_element(By.XPATH, "//canvas")
                 if new_qrcode:
@@ -109,6 +109,9 @@ class WhatsAppClient:
 
                     else:
                         print("QR Code não encontrado ou não legível")
+
+                elif session_data:
+                    break
 
             except NoSuchElementException:
                 pass
@@ -143,7 +146,7 @@ class WhatsAppClient:
                 except Exception:
                     pass
 
-                return
+                return True
         except UnboundLocalError:
             pass
         except NoSuchElementException:
