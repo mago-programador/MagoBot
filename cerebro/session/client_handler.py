@@ -39,11 +39,12 @@ class WhatsAppClient:
                             with open(session_path, 'a+') as session_file:
                                 session_file.write("session=True")
 
+                            return
+
                     except UnboundLocalError:
                         pass
                     except NoSuchElementException:
                         pass
-                    return
 
         else:
             self.qrcode_whatsapp_extractor()  # Caso seja falso a variável presente no arquivo de sessão, é iniciado o método de reconhecimento do QR CODE.
