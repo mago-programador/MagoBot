@@ -81,14 +81,8 @@ class WhatsAppClient:
 
             try:
 
-                session_data = self.session_init()
-
                 new_qrcode = self.driver.find_element(By.XPATH, "//canvas")
-
-                if session_data:
-                    break
-
-                elif new_qrcode:
+                if new_qrcode:
 
                     self.driver.save_screenshot(self.screenshot_path)
 
@@ -110,6 +104,10 @@ class WhatsAppClient:
                         if new_qrcode != qr_content:
                             print("\nqrcode atualizado, scaneie novamente\n")
                             self.qrcode_whatsapp_extractor()
+                        else:
+                            session_data = self.session_init()
+                            if session_data:
+                                break
 
                     else:
                         print("QR Code não encontrado ou não legível")
