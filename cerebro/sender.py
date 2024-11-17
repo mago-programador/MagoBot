@@ -63,7 +63,7 @@ class SenderMessages:
         # Para excluir a marca do MagoBot das mensagens basta apagar as linhas deste bloco
         inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
         inputbox.send_keys(Keys.SHIFT, Keys.ENTER)
-        inputbox.send_keys("ミ★ MagoBot 1.0 ★彡")
+        inputbox.send_keys("ミ★ MagoBot 2.0 ★彡")
         # Apague até aqui
 
         send_button = self.driver.find_element(By.XPATH, "//span[@data-icon='send']")
