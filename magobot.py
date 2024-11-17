@@ -80,8 +80,14 @@ class MagoBotClient:
             case "Cambio":
                 self.send("Olá Mundo!")
 
-            case "Jarvis":
-                self.send("Olá senhor, como posso ajudar?")
+            case "Link do TikTok":
+                self.send("https://www.tiktok.com/@mago.programador")
+
+            case "wallpaper":
+                self.send_media("caminho_do_bot/wallpaper_example.jpg", "*aqui está senhor, conforme solicitado*")
+
+            case "relatório":
+                self.send_media("caminho_do_bot/excel_example.xlsx", "*segue o relatório, senhor*")
 
 
 MagoBot = MagoBotClient()

@@ -44,7 +44,7 @@ class InitDriver:
 
             # Aqui se encontra todas as configurações que eu considero necessária para o bom funcionamento do bot.
             options = Op()  # Inicializa a instância "options" para configurar as opçoes do navegador.
-            options.add_argument("--headless")  # Inicia o chrome webdriver em segundo plano.
+            #options.add_argument("--headless")  # Inicia o chrome webdriver em segundo plano.
             options.add_argument("--allow-running-insecure-content")  # Habilita o carregamento de conteúdo não seguro, em algumas máquinas essa opção evita erros.
             options.add_argument("--window-size=1920,1080")  # Seta o tamanho da janela, mesmo que em segundo plano, permitindo o carregamento dos elementos web.
             options.add_argument("--allow-insecure-localhost")  # Habilita conteúdo não seguro no localhost.

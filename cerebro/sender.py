@@ -81,7 +81,7 @@ class SenderMessages:
             EC.element_to_be_clickable(
                 (
                     By.XPATH,
-                    '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p',
+                    '//div[@aria-placeholder="Digite uma mensagem"]/p',
                 )
             )
         )
@@ -89,7 +89,7 @@ class SenderMessages:
         if legenda is not None:
             self.driver.find_element(
                 By.XPATH,
-                '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p',
+                '//div[@aria-placeholder="Digite uma mensagem"]/p',
             ).send_keys(legenda)
         else:
             pass

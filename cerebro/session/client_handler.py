@@ -1,7 +1,7 @@
 import os
-import qrcode
+import cv2
+import numpy as np
 from PIL import Image
-from pyzbar.pyzbar import decode
 from cerebro.session.driver_init import InitDriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
@@ -32,9 +32,9 @@ class WhatsAppClient:
                             chat_list = self.driver.find_element(By.XPATH, "//div[@aria-label='Lista de conversas']")
 
                             if chat_list:
-                                
+
                                 print("sessão iniciada com sucesso")
-                                
+
                                 session_path = os.path.join("cerebro", "session", "session_data.txt")
 
                                 with open(session_path, 'a+') as session_file:
@@ -66,7 +66,7 @@ class WhatsAppClient:
 
         self.driver.save_screenshot(screenshot_path)  # Captura uma screenshot da página WEB para iniciar a captura do QR CODE.
 
-        # Essa parte básica é apenas para converter de foto para apresentar o QR CODE no console.
+        # Obtendo as coodernadas e o tamanho do QRCode para recortá-lo.
         location = qr_content.location
         size = qr_content.size
         left = location["x"]
@@ -74,35 +74,43 @@ class WhatsAppClient:
         right = left + size["width"]
         bottom = top + size["height"]
 
+        # Abrir a captura da tela da WEB e passar os parâmetros de largura e altura e salvar o QRCode recortado.
         screenshot = Image.open(screenshot_path)
         qr_code_image = screenshot.crop((left, top, right, bottom))
+        qr_code_path = os.path.join("cerebro", "session", "qr_code.png")
+        qr_code_image.save(qr_code_path)
 
-        qr_code_data = decode(qr_code_image)
+        # Carrega o QRCode, captura os pixels para comparação e exibe na tela o QRCode para leitura do usuário.
+        qr = cv2.imread(qr_code_path)  # OpenCV carrega a imagem.
+        qr_code = np.array(qr_code_image)  # Converte cada pixel da imagem em uma array e guarda essa informações para comparação.
+        cv2.imshow("WhatsApp - QRCode", qr)  # Exibe o QRCode em uma janela do OpenCV.
 
-        if qr_code_data:
-            qr_content = qr_code_data[0].data.decode("utf-8")
-
-        else:
-            print("QR Code não encontrado ou não legível")
-
-        qr = qrcode.QRCode(
-            version=1,
-            border=1,
-        )
-
-        qr.add_data(qr_content)
-        qr.make(fit=True)
-
-        qr.print_ascii(invert=True)
-
+        # Loop de verificação: verifica se há um novo QRCode.
         while True:
 
+            # Essa condicional permite que o OpenCV exiba o QRCode sem parar o fluxo do código, o que geralmente ocorre quando se utiliza cv2.waitKey().
+            if cv2.waitKey(1) & 0xFF == ord('q'):  # Caso seja pressionado a tecla 'q' com a janela ativa, ele a fechará.
+                break
+
             try:
-                new_qrcode = self.driver.find_element(By.XPATH, "//canvas")
+
+                # Caso apareça a mensagem para recarregar o QRCode, ele clicará e fará novamente a leitura do QRCode.
+                self.driver.find_element(By.XPATH, '//div[text()="Clique para recarregar o QR code"]/../..').click()
+                self.qrcode_whatsapp_extractor()
+
+            except NoSuchElementException:
+                pass
+
+            try:
+
+                # Verifica se há um novo QRCode.
+                new_qrcode = self.driver.find_element(By.XPATH, "//canvas")  # Elemento responsável pela imagem do QRCode na página WEB.
+
                 if new_qrcode:
 
-                    self.driver.save_screenshot(screenshot_path)
+                    self.driver.save_screenshot(screenshot_path)  # Captura a imagem em cada volta do loop, mesmo ainda não tendo atualizado.
 
+                    # Obtém localização e tamanho do QRCode para recortá-lo.
                     location = new_qrcode.location
                     size = new_qrcode.size
                     left = location["x"]
@@ -110,29 +118,18 @@ class WhatsAppClient:
                     right = left + size["width"]
                     bottom = top + size["height"]
 
+                    # Abre a imagem com uma instância do Pillow, recorta e carrega os pixels para comparação com o QRCode que está sendo exibido.
                     screenshot = Image.open(screenshot_path)
-                    qr_code_image = screenshot.crop((left, top, right, bottom))
+                    new_qr_code_image = screenshot.crop((left, top, right, bottom))
+                    new_qr_code = np.array(new_qr_code_image)
 
-                    qr_code_data = decode(qr_code_image)
+                    if not np.array_equal(new_qr_code, qr_code):  # Caso haja diferença dos pixels, escaneia novamente o QRCode.
 
-                    if qr_code_data:
-                        new_qrcode = qr_code_data[0].data.decode("utf-8")
+                        cv2.destroyAllWindows()  # Encerra a janela do QRCode que está sendo exibido.
+                        print("\nqrcode atualizado, scaneie novamente\n")
+                        self.qrcode_whatsapp_extractor()
 
-                        if new_qrcode != qr_content:
-                            print("\nqrcode atualizado, scaneie novamente\n")
-                            self.qrcode_whatsapp_extractor()
-
-                    else:
-                        print("QR Code não encontrado ou não legível")
-            except NoSuchElementException:
-                pass
-            except AttributeError:
-                pass
-            except UnboundLocalError:
-                pass
-            except NoSuchElementException:
-                pass
-            except StaleElementReferenceException:
+            except (NoSuchElementException, AttributeError, UnboundLocalError, NoSuchElementException, StaleElementReferenceException):
                 pass
 
             try:
@@ -140,17 +137,17 @@ class WhatsAppClient:
                 chat_list = self.driver.find_element(By.XPATH, "//div[@aria-label='Lista de conversas']")
 
                 if chat_list:
-                    
+                    cv2.destroyAllWindows()  # Encerra a janela do QRCode que está sendo exibido.
                     print("sessão iniciada com sucesso")
-                    
+
                     session_path = os.path.join("cerebro", "session", "session_data.txt")
 
                     with open(session_path, 'a+') as session_file:
                         session_file.write("session=True")
 
                     os.remove(screenshot_path)
+                    os.remove(qr_code_path)
                     break
-            except UnboundLocalError:
-                pass
-            except NoSuchElementException:
+
+            except (UnboundLocalError, NoSuchElementException):
                 pass

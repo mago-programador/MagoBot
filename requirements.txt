@@ -1,4 +1,4 @@
 selenium
 pillow
-pyzbar
-qrcode
+numpy
+opencv-python
