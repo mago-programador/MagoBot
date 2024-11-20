@@ -19,7 +19,8 @@ class InitDriver:
         """
         try:
 
-            print("\033[92mMagoBot v1.0\033[0m")  # Essa aqui é a minha marca kkk. O meu "eu estive aqui", fique à vontade para personalizá-lo.
+            print("\n")
+            print("\033[92mMagoBot v2.0\033[0m")  # Essa aqui é a minha marca kkk. O meu "eu estive aqui", fique à vontade para personalizá-lo.
             print("\n")
             print('iniciando...')
 
@@ -48,8 +49,10 @@ class InitDriver:
             options.add_argument("--allow-running-insecure-content")  # Habilita o carregamento de conteúdo não seguro, em algumas máquinas essa opção evita erros.
             options.add_argument("--window-size=1920,1080")  # Seta o tamanho da janela, mesmo que em segundo plano, permitindo o carregamento dos elementos web.
             options.add_argument("--allow-insecure-localhost")  # Habilita conteúdo não seguro no localhost.
-            cookies_path = f"{os.path.join('cerebro','session', 'cookies')}"  # Caminho padrão do script para armazenar a pasta "cookies".
+            cookies_path = f"{os.path.dirname(__file__)}\\cerebro\\session\\cookies"  # Caminho padrão do script para armazenar a pasta "cookies".
             options.add_argument(f"--user-data-dir={cookies_path}")  # Seta o caminho da pasta onde ficará os cookies do navegador e guardará a sessão.
+            options.add_argument("--force-device-scale-factor=1")  # Força a utilização da escala para 100% no navegador, evitando problemas com DPI's e resoluções diferentes.
+            options.add_argument("--high-dpi-support=1")  # Suporte para telas com alta densidade de pixels.
             options.add_argument("--no-first-run")  # Desabilita a tela inicial do navegador, que aparece quando o usuário abre o navegador.
             options.add_argument("--no-sandbox")  # Aumenta o desempenho do ambiente do navegador.
             options.add_argument("--disable-webgl")  # Desabilita o webgl responsável pela renderização gráfica, melhora o desempenho do bot.
